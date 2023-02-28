@@ -1,0 +1,8 @@
+@font-face {
+    font-family: emulogic;
+    src: url('/utils/font/emulogic.ttf');
+}
+
+body {
+    zoom: 1.5
+}
