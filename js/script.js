@@ -27,9 +27,11 @@
 
     var scoreMessage = new ObjectsMessage(10, `Acertos: 00${hits}`, '#0F0');
     scoreMessage.font = 'normal 10px emulogic';
-    // updateScore();
 
-    messages.push(startMessage, pauseMessage, scoreMessage);
+    var gameOverMessage = new ObjectsMessage(cnv.height / 2, '', '#F00');
+    gameOverMessage.visible = false;
+
+    messages.push(startMessage, pauseMessage, scoreMessage, gameOverMessage);
 
     var img = new Image();
     img.addEventListener('load', loadHandler, false);
@@ -114,6 +116,8 @@
                 break;
             case PLAYING: update();
                 break;
+            case OVER: endGame();
+                break;
         }
 
         render();
@@ -179,6 +183,13 @@
             }
             // verificar se  alien chegou a terra
             if (alien.y > cnv.height + alien.height) {
+                gameState = OVER;
+            }
+            
+            // Verificar se um alien colidi com a nave
+            if(collide(alien, defender)) {
+                destroyAlien(alien);
+                removeObjects(defender, sprites);
                 gameState = OVER;
             }
 
@@ -251,6 +262,14 @@
         }
 
         scoreMessage.text = `Acertos: ${hits}`;
+    }
+
+    function endGame() {
+        gameOverMessage.text = `A terra foi invadida`;
+        gameOverMessage.visible = true;
+        setTimeout(() => {
+            location.reload();
+        }, 3000);
     }
 
     function render() {
