@@ -14,6 +14,8 @@
     var alienFrequency = 100;
     var alienTimer = 0;
     var hits = 0;
+    var FIRE = 0;
+    var EXPLODED = 1;
 
     var background = new Sprite(identification, 0, 56, 400, 500, 0, 0);
     var defender = new Sprite(identification, 0, 0, 30, 50, 185, 450);
@@ -81,6 +83,8 @@
             case RIGTH: mvRigth = false;
                 break;
             case ENTER:
+                if (gameState === OVER)
+                    return;
                 if (gameState !== PLAYING) {
                     gameState = PLAYING;
                     startMessage.visible = false;
@@ -185,9 +189,9 @@
             if (alien.y > cnv.height + alien.height) {
                 gameState = OVER;
             }
-            
+
             // Verificar se um alien colidi com a nave
-            if(collide(alien, defender)) {
+            if (collide(alien, defender)) {
                 destroyAlien(alien);
                 removeObjects(defender, sprites);
                 gameState = OVER;
@@ -213,6 +217,7 @@
         missile.vy = -8;
         sprites.push(missile);
         missiles.push(missile);
+        playSound(FIRE);
     }
 
     function makeAlien() {
@@ -236,6 +241,7 @@
     function destroyAlien(alien) {
         alien.state = alien.EXPLODED;
         alien.explode();
+        playSound(EXPLODED);
         setTimeout(() => {
             removeObjects(alien.id, aliens);
             removeObjects(alien.id, sprites);
@@ -270,6 +276,19 @@
         setTimeout(() => {
             location.reload();
         }, 3000);
+    }
+
+    // Efeitos sonoros
+    function playSound(soundType) {
+        var sound = document.createElement("audio");
+        if (soundType === EXPLODED) {
+            sound.src = "/sound/explosion.mp3"
+        } else {
+            sound.src = "/sound/fire.mp3"
+        }
+        sound.addEventListener("canplaythrough", function () {
+            sound.play();
+        }, false);
     }
 
     function render() {
