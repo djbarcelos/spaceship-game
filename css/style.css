@@ -4,5 +4,63 @@
 }
 
 body {
-    zoom: 1.5
+    margin: 0;
+    padding: 0;
+    zoom: 1.1
+}
+
+#container {
+    width: 400px; 
+    height: 500px; 
+    position: relative; 
+    margin: 0 auto; 
+    border: solid; 
+    background-color: #FFF; 
+    top: 50px;
+}
+
+.control-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.central-area-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.direction-ctr {
+    margin: 20px auto;
+    color: #eee;
+    background-color: #00000000;
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    border: 2px solid #eee;
+    font-size: 25px;
+}
+
+.start-ctr {
+    color: #eee;
+    width: 20%;
+    height: 20px;
+    background-color: #00000000;
+    border-radius: 10px;
+    font-size: 8px;
+    font-family: emulogic;
+}
+
+.shoot-ctr {
+    color: #eee;
+    width: 40%;
+    height: 30px;
+    background-color: #00000000;
+    margin: 20px auto;
+    border-radius: 10px;
+    font-size: 10px;
+    font-family: emulogic;
 }

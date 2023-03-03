@@ -102,7 +102,6 @@
     }, false);
 
     // # Funcoes
-
     function loadHandler() {
         loadedAssets++;
 
@@ -116,7 +115,7 @@
         requestAnimationFrame(loop, cnv);
 
         switch (gameState) {
-            case LOADING: console.log('LOADING')
+            case LOADING:
                 break;
             case PLAYING: update();
                 break;
@@ -277,7 +276,6 @@
             location.reload();
         }, 3000);
     }
-
     // Efeitos sonoros
     function playSound(soundType) {
         var sound = document.createElement("audio");
@@ -289,6 +287,85 @@
         sound.addEventListener("canplaythrough", function () {
             sound.play();
         }, false);
+    }
+
+    function addControls() {
+
+        if (!isMobile()) return;
+
+        var container = document.getElementById('container');
+        var controlArea = document.createElement("div");
+        var centralAreaControl = document.createElement("div");
+        var CTR_LEFT = document.createElement('button');
+        var CTR_RIGHT = document.createElement('button');
+        var CTR_START = document.createElement('button');
+        var CTR_SHOOT = document.createElement('button');
+
+        controlArea.className = 'control-area';
+        centralAreaControl.className = 'central-area-control';
+
+        CTR_LEFT.type = 'button';
+        CTR_RIGHT.type = 'button';
+
+        CTR_LEFT.innerHTML = '<';
+        CTR_RIGHT.innerHTML = '>';
+        CTR_START.innerHTML = 'START';
+        CTR_SHOOT.innerHTML = 'ATIRAR';
+
+        CTR_LEFT.className = 'direction-ctr';
+        CTR_RIGHT.className = 'direction-ctr';
+        CTR_START.className = 'start-ctr';
+        CTR_SHOOT.className = 'shoot-ctr';
+
+        CTR_LEFT.addEventListener('touchstart', function (evt) {
+            mvLeft = true;
+        }, false);
+
+        CTR_LEFT.addEventListener('touchend', function (evt) {
+            mvLeft = false;
+        }, false);
+
+        CTR_RIGHT.addEventListener('touchstart', function (evt) {
+            mvRigth = true;
+        }, false);
+
+        CTR_RIGHT.addEventListener('touchend', function (evt) {
+            mvRigth = false;
+        }, false);
+
+        CTR_SHOOT.addEventListener('touchstart', function (evt) {
+            if (!spaceIsDown) {
+                spaceIsDown = true;
+                shoot = true;
+            }
+        }, false);
+        
+        CTR_SHOOT.addEventListener('touchend', function (evt) {
+            if (gameState !== PAUSED)
+                    spaceIsDown = false;
+        }, false);
+
+        CTR_START.addEventListener('touchend', function (evt) {
+            if (gameState === OVER)
+                return;
+            if (gameState !== PLAYING) {
+                gameState = PLAYING;
+                startMessage.visible = false;
+                pauseMessage.visible = false;
+            } else {
+                gameState = PAUSED;
+                pauseMessage.visible = true;
+            }
+        }, false);
+
+        controlArea.appendChild(CTR_LEFT);
+        controlArea.appendChild(CTR_START);
+        controlArea.appendChild(CTR_RIGHT);
+
+        centralAreaControl.appendChild(CTR_SHOOT);
+
+        container.appendChild(controlArea);
+        container.appendChild(centralAreaControl);
     }
 
     function render() {
@@ -314,4 +391,5 @@
     }
 
     loop();
+    addControls();
 })();
